@@ -1,18 +1,45 @@
 package pe.com.bank.credit.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.bank.credit.entity.CreditEntity;
 import pe.com.bank.credit.repository.CreditRepository;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+@AllArgsConstructor
 @Service
 public class CreditService {
 
-    @Autowired
+
     CreditRepository creditRepository;
 
-    public Flux<CreditEntity> findAllCredit(){
+    public Flux<CreditEntity> findAllCredit() {
         return creditRepository.findAll();
     }
+
+    public Mono<CreditEntity> addCredit(CreditEntity creditEntity) {
+        return creditRepository.save(creditEntity);
+    }
+
+    public Mono<Void> deleteCredit(String id) {
+        return creditRepository.deleteById(id);
+    }
+
+
+    public Mono<CreditEntity> updateCredit(CreditEntity updatedCredit, String id) {
+
+        return creditRepository.findById(id)
+                .flatMap(credit -> {
+                    credit.setCreditAvailable(updatedCredit.getCreditAvailable());
+                    credit.setLimitCredit(updatedCredit.getLimitCredit());
+                    credit.setNumberCredit(updatedCredit.getNumberCredit());
+                    credit.setAmountUsed(updatedCredit.getAmountUsed());
+                    credit.setType(updatedCredit.getType());
+                    return creditRepository.save(credit);
+                });
+    }
+
 
 }
