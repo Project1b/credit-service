@@ -14,30 +14,40 @@ import reactor.core.publisher.Sinks;
 
 @AllArgsConstructor
 @RestController
+@RequestMapping("/v1")
 public class CreditController {
 
     CreditService creditService;
 
-    @GetMapping("/list/credits")
+    @GetMapping("/credits")
     public Flux<CreditEntity> findAllCustomer() {
         return creditService.findAllCredit();
     }
 
-    @PostMapping("/createCredits")
+    @GetMapping("/credits/{id}")
+    public Mono<ResponseEntity<CreditEntity>> getMovieInfoById(@PathVariable String id){
+        return creditService.getCreditById(id)
+                .map(movieInfo1 -> ResponseEntity.ok()
+                        .body(movieInfo1))
+                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
+                .log();
+    }
+
+    @PostMapping("/credits")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<CreditEntity> addCredit(@RequestBody CreditEntity creditEntity){
         return creditService.addCredit(creditEntity);
 
     }
 
-    @DeleteMapping("/createCredits/{id}")
+    @DeleteMapping("/credits/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteCredit(@PathVariable String id){
         return creditService.deleteCredit(id);
 
     }
 
-    @PutMapping("/createCredits/{id}")
+    @PutMapping("/credits/{id}")
     public Mono<ResponseEntity<CreditEntity>> updateCredit(@RequestBody CreditEntity updatedCredit, @PathVariable String id){
         return creditService.updateCredit(updatedCredit, id)
                 .map(ResponseEntity.ok()::body)

@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class CreditEntity {
 
     @Id
-    private String id;
+    private String creditId;
     private String amountUsed;
     private String limitCredit;
     private String creditAvailable;

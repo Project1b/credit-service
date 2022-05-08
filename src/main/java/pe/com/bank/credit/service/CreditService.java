@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.bank.credit.entity.CreditEntity;
+import pe.com.bank.credit.entity.ProductEntity;
 import pe.com.bank.credit.repository.CreditRepository;
+import pe.com.bank.credit.repository.ProductRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -13,7 +15,13 @@ import reactor.core.publisher.Mono;
 public class CreditService {
 
 
-    CreditRepository creditRepository;
+    private CreditRepository creditRepository;
+    private ProductRepository productRepository;
+
+    public Mono<CreditEntity> getCreditById(String id) {
+        return creditRepository.findById(id);
+    }
+
 
     public Flux<CreditEntity> findAllCredit() {
         return creditRepository.findAll();
@@ -41,5 +49,26 @@ public class CreditService {
                 });
     }
 
+  /*  public Flux<ProductEntity> findProductByCreditId(String id) {
+        return creditRepository
+                .findById(id)
+                .thenMany(productRepository.findAll())
+                .filter(comment1 -> comment1.getIdCredit()
+                        .equals(id));
+
+    }*/
+
+/*    public Mono<CreditEntity> findPostByIdShowComments(String id) {
+        return creditRepository
+                .findById(id)
+                .flatMap(postFound -> ProductService
+                        .findCommentsByPostId(postFound.getId())
+                        .collectList()
+                        .flatMap(comments -> {
+                            postFound.setListComments(comments);
+                            return Mono.just(postFound);
+                        })
+                );
+    }*/
 
 }
