@@ -8,10 +8,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "product")
 public class ProductEntity {
 
+    private String productId;
     private String type;
-    private String idCredit;
+    // private String idCredit;
 
 }

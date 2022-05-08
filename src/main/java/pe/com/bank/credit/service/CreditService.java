@@ -22,6 +22,10 @@ public class CreditService {
         return creditRepository.findById(id);
     }
 
+   /* public Mono<String> getProductIdByCreditId(String id){
+        return creditRepository.findById(id).subscribe();
+    }*/
+
 
     public Flux<CreditEntity> findAllCredit() {
         return creditRepository.findAll();

@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pe.com.bank.credit.client.ProductRestClient;
 import pe.com.bank.credit.entity.CreditEntity;
+import pe.com.bank.credit.entity.CreditProduct;
 import pe.com.bank.credit.exception.CreditNotFoundException;
 import pe.com.bank.credit.service.CreditService;
 import reactor.core.publisher.Flux;
@@ -18,6 +20,7 @@ import reactor.core.publisher.Sinks;
 public class CreditController {
 
     CreditService creditService;
+    ProductRestClient productRestClient;
 
     @GetMapping("/credits")
     public Flux<CreditEntity> findAllCustomer() {
@@ -25,7 +28,7 @@ public class CreditController {
     }
 
     @GetMapping("/credits/{id}")
-    public Mono<ResponseEntity<CreditEntity>> getMovieInfoById(@PathVariable String id){
+    public Mono<ResponseEntity<CreditEntity>> getMovieInfoById(@PathVariable String id) {
         return creditService.getCreditById(id)
                 .map(movieInfo1 -> ResponseEntity.ok()
                         .body(movieInfo1))
@@ -35,20 +38,20 @@ public class CreditController {
 
     @PostMapping("/credits")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<CreditEntity> addCredit(@RequestBody CreditEntity creditEntity){
+    public Mono<CreditEntity> addCredit(@RequestBody CreditEntity creditEntity) {
         return creditService.addCredit(creditEntity);
 
     }
 
     @DeleteMapping("/credits/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Mono<Void> deleteCredit(@PathVariable String id){
+    public Mono<Void> deleteCredit(@PathVariable String id) {
         return creditService.deleteCredit(id);
 
     }
 
     @PutMapping("/credits/{id}")
-    public Mono<ResponseEntity<CreditEntity>> updateCredit(@RequestBody CreditEntity updatedCredit, @PathVariable String id){
+    public Mono<ResponseEntity<CreditEntity>> updateCredit(@RequestBody CreditEntity updatedCredit, @PathVariable String id) {
         return creditService.updateCredit(updatedCredit, id)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.error(new CreditNotFoundException("credit Not Found")))
@@ -57,5 +60,21 @@ public class CreditController {
                 .log();
 
     }
+
+
+    /// credit con product
+    @GetMapping("/creditProduct/{id}")
+    public Mono<CreditProduct> retrieveCreditById(@PathVariable("id") String creditId) {
+
+        return creditService.getCreditById(creditId)
+                .flatMap(movieInfo -> {
+                    var reviewsListMono = productRestClient.retrieveProduct(movieInfo.getProductId());
+                    return reviewsListMono.map(reviews -> new CreditProduct(
+                            movieInfo.getCreditId(), movieInfo.getAmountUsed(), movieInfo.getLimitCredit(), movieInfo.getCreditAvailable(),
+                            movieInfo.getNumberCredit(), movieInfo.getType(), reviews));
+                });
+
+    }
+
 
 }
