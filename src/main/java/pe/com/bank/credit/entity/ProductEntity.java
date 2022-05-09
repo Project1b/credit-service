@@ -12,6 +12,8 @@ public class ProductEntity {
 
     private String productId;
     private String type;
-    // private String idCredit;
+    private String productName;
+    private String commission;
+    private String transactionLimit;
 
 }

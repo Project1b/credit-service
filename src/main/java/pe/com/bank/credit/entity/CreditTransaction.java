@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CreditTransaction {
 
+
     private String creditId;
     private String amountUsed;
     private String limitCredit;

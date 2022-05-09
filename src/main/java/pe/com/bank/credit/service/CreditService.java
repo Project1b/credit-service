@@ -14,18 +14,12 @@ import reactor.core.publisher.Mono;
 @Service
 public class CreditService {
 
-
     private CreditRepository creditRepository;
     private ProductRepository productRepository;
 
     public Mono<CreditEntity> getCreditById(String id) {
         return creditRepository.findById(id);
     }
-
-   /* public Mono<String> getProductIdByCreditId(String id){
-        return creditRepository.findById(id).subscribe();
-    }*/
-
 
     public Flux<CreditEntity> findAllCredit() {
         return creditRepository.findAll();
@@ -38,7 +32,6 @@ public class CreditService {
     public Mono<Void> deleteCredit(String id) {
         return creditRepository.deleteById(id);
     }
-
 
     public Mono<CreditEntity> updateCredit(CreditEntity updatedCredit, String id) {
 

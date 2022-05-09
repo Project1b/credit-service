@@ -23,7 +23,6 @@ public class CreditController {
 
     CreditService creditService;
     ProductRestClient productRestClient;
-
     TransactionRestClient transactionRestClient;
 
     @GetMapping("/credits")
@@ -34,8 +33,8 @@ public class CreditController {
     @GetMapping("/credits/{id}")
     public Mono<ResponseEntity<CreditEntity>> getMovieInfoById(@PathVariable String id) {
         return creditService.getCreditById(id)
-                .map(movieInfo1 -> ResponseEntity.ok()
-                        .body(movieInfo1))
+                .map(credit1 -> ResponseEntity.ok()
+                        .body(credit1))
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
                 .log();
     }
@@ -71,11 +70,11 @@ public class CreditController {
     public Mono<CreditProduct> retrieveCreditById(@PathVariable("id") String creditId) {
 
         return creditService.getCreditById(creditId)
-                .flatMap(movieInfo -> {
-                    var reviewsListMono = productRestClient.retrieveProduct(movieInfo.getProductId());
-                    return reviewsListMono.map(reviews -> new CreditProduct(
-                            movieInfo.getCreditId(), movieInfo.getAmountUsed(), movieInfo.getLimitCredit(), movieInfo.getCreditAvailable(),
-                            movieInfo.getNumberCredit(), movieInfo.getType(), reviews));
+                .flatMap(credit12 -> {
+                    var productListMono = productRestClient.retrieveProduct(credit12.getProductId());
+                    return productListMono.map(product2 -> new CreditProduct(
+                            credit12.getCreditId(), credit12.getAmountUsed(), credit12.getLimitCredit(), credit12.getCreditAvailable(),
+                            credit12.getNumberCredit(), credit12.getType(), product2));
                 });
 
     }
@@ -84,7 +83,6 @@ public class CreditController {
 
     @GetMapping("/creditTransaction/{id}")
     public Mono<CreditTransaction> retrieveCreditAndTransactionById(@PathVariable("id") String creditId) {
-
         Mono<List<TransactionDTO>>  transc = transactionRestClient.retrieveProduct(creditId).collectList();
         Mono<CreditEntity> cred=creditService.getCreditById(creditId);
         Mono<CreditTransaction> credi=
@@ -99,53 +97,6 @@ public class CreditController {
                                              cr.getNumberCredit(),
                                              cr.getType(),pr,tr));}));
         return credi;
-
-     /*   return creditService.getCreditById(creditId)
-                .flatMap(movieInfo -> {
-                    ;
-                    var transct = transactionRestClient.retrieveProduct(creditId).collectList();
-                    return transct.map(review2 -> {
-                        var reviewsListMono = productRestClient.retrieveProduct(movieInfo.getProductId());
-                        return productRestClient.retrieveProduct(movieInfo.getProductId());.map(reviews -> new CreditTransaction(
-                                movieInfo.getCreditId(),
-                                movieInfo.getAmountUsed(),
-                                movieInfo.getLimitCredit(),
-                                movieInfo.getCreditAvailable(),
-                                movieInfo.getNumberCredit(),
-                                movieInfo.getType(),
-                                reviews, review2));
-                    });
-                });*/
     }
-
-    ;
-
-/*
-    public Mono<CreditTransaction> retrieveCreditAndTransactionById(@PathVariable("id") String creditId) {
-
-        return creditService.getCreditById(creditId)
-                .flatMap(movieInfo -> {
-                    var reviewsListMono = productRestClient.retrieveProduct(movieInfo.getProductId());
-                    return reviewsListMono.map(reviews -> {
-                        var reviesListTransaction = transactionRestClient.retrieveProduct(creditId);
-                          return reviesListTransaction.map(revies-> new CreditTransaction( movieInfo.getCreditId(), movieInfo.getAmountUsed(), movieInfo.getLimitCredit(), movieInfo.getCreditAvailable(),
-                                  movieInfo.getNumberCredit(), movieInfo.getType(),reviews,revies));
-                    });
-                });
-
-    }
-*/
-
-
- /*   public Mono<CreditTransaction> retrieveCreditAndTransactionById(@PathVariable("id") String creditId){
-
-        return moviesInfoRestClient.retrieveMovieInfo(movieId)
-                .flatMap(movieInfo -> {
-                    var reviewsListMono = reviewsRestClient.retrieveReviews(movieId)
-                            .collectList();
-
-                    return reviewsListMono.map(reviews -> new Movie(movieInfo, reviews) );
-                });
-    }*/
 
 }

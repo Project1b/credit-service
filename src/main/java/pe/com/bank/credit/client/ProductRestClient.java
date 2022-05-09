@@ -14,8 +14,8 @@ public class ProductRestClient {
 
     private WebClient webClient;
 
-    @Value("http://localhost:8082/v1/reviews")
-    private String CreditUrl;
+    @Value("http://localhost:8092/v1/products")
+    private String ProductUrl;
 
     public ProductRestClient(WebClient webClient) {
         this.webClient = webClient;
@@ -23,7 +23,7 @@ public class ProductRestClient {
 
     public Mono<ProductEntity> retrieveProduct(String productId){
 
-        var url = CreditUrl.concat("/{id}");
+        var url = ProductUrl.concat("/{id}");
         return webClient
                 .get()
                 .uri(url, productId)

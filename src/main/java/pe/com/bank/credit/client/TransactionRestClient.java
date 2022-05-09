@@ -13,11 +13,9 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class TransactionRestClient {
 
-
-
     private WebClient webClient;
 
-    @Value("http://localhost:8084/v1/movieinfos/")
+    @Value("http://localhost:8094/v1/transaction/")
     private String CreditUrl;
 
     public TransactionRestClient(WebClient webClient) {
