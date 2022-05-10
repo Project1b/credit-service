@@ -39,7 +39,7 @@ public class CreditController {
                 .log();
     }
 
-//prueba de commit A
+//prueba de commit AB
     @PostMapping("/credits")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<CreditEntity> addCredit(@RequestBody CreditEntity creditEntity) {
