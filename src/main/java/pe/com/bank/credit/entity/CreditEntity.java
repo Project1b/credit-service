@@ -14,9 +14,9 @@ public class CreditEntity {
 
     @Id
     private String creditId;
-    private String amountUsed;
-    private String limitCredit;
-    private String creditAvailable;
+    private Double amountUsed;
+    private Double limitCredit;
+    private Double creditAvailable;
     private String numberCredit;
     private String type;
     private String productId;

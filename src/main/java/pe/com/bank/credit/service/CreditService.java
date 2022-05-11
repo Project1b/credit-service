@@ -37,11 +37,12 @@ public class CreditService {
 
         return creditRepository.findById(id)
                 .flatMap(credit -> {
-                    credit.setCreditAvailable(updatedCredit.getCreditAvailable());
-                    credit.setLimitCredit(updatedCredit.getLimitCredit());
-                    credit.setNumberCredit(updatedCredit.getNumberCredit());
-                    credit.setAmountUsed(updatedCredit.getAmountUsed());
-                    credit.setType(updatedCredit.getType());
+                    credit.setCreditAvailable(updatedCredit.getCreditAvailable() != null ? updatedCredit.getCreditAvailable() : credit.getCreditAvailable());
+                    credit.setLimitCredit(updatedCredit.getLimitCredit() != null ? updatedCredit.getLimitCredit() : credit.getLimitCredit());
+                    credit.setNumberCredit(updatedCredit.getNumberCredit() != null ? updatedCredit.getNumberCredit() : credit.getNumberCredit());
+                    credit.setAmountUsed(updatedCredit.getAmountUsed() != null ? updatedCredit.getAmountUsed() : credit.getAmountUsed());
+                    credit.setType(updatedCredit.getType() != null ? updatedCredit.getType() : credit.getType());
+                    credit.setProductId(updatedCredit.getProductId() != null ? updatedCredit.getProductId() : credit.getProductId());
                     return creditRepository.save(credit);
                 });
     }

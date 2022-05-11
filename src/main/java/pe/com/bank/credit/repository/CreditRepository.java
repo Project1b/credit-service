@@ -10,5 +10,4 @@ import reactor.core.publisher.Mono;
 public interface CreditRepository extends ReactiveMongoRepository<CreditEntity,String> {
 
 
-
 }

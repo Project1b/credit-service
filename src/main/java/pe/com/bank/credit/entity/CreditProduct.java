@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 public class CreditProduct {
 
     private String creditId;
-    private String amountUsed;
-    private String limitCredit;
-    private String creditAvailable;
+    private Double amountUsed;
+    private Double limitCredit;
+    private Double creditAvailable;
     private String numberCredit;
     private String type;
     private ProductEntity productEntity;

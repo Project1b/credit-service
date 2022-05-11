@@ -11,7 +11,7 @@ public class TransactionDTO {
 
     private String transactionId;
     private String accountNumber;
-    private int amount;
+    private Double amount;
     private String date;
     private String type;
 
