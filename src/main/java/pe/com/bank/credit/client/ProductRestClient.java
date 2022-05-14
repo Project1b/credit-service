@@ -14,8 +14,8 @@ public class ProductRestClient {
 
     private WebClient webClient;
 
-    @Value("http://localhost:8092/v1/products")
-    private String ProductUrl;
+    @Value("${restClient.productUrl}")
+    private String productUrl;
 
     public ProductRestClient(WebClient webClient) {
         this.webClient = webClient;
@@ -23,14 +23,13 @@ public class ProductRestClient {
 
     public Mono<ProductEntity> retrieveProduct(String productId){
 
-        var url = ProductUrl.concat("/{id}");
+        var url = productUrl.concat("/{id}");
         return webClient
                 .get()
                 .uri(url, productId)
                 .retrieve()
                 .bodyToMono(ProductEntity.class)
                 .log();
-
     }
 
 }

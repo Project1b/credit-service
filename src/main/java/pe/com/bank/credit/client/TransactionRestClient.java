@@ -15,8 +15,8 @@ public class TransactionRestClient {
 
     private WebClient webClient;
 
-    @Value("http://localhost:8094/v1/transaction/")
-    private String CreditUrl;
+    @Value("${restClient.transactionUrl}")
+    private String transactionUrl;
 
     public TransactionRestClient(WebClient webClient) {
         this.webClient = webClient;
@@ -24,7 +24,7 @@ public class TransactionRestClient {
 
     public Flux<TransactionDTO> retrieveProduct(String productId){
 
-        var url = CreditUrl.concat("/{id}");
+        var url = transactionUrl.concat("/{id}");
         return webClient
                 .get()
                 .uri(url, productId)

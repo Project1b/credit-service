@@ -1,7 +1,6 @@
 package pe.com.bank.credit.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +11,6 @@ import pe.com.bank.credit.exception.CreditNotFoundException;
 import pe.com.bank.credit.service.CreditService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
-
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -22,8 +18,6 @@ import java.util.List;
 public class CreditController {
 
     CreditService creditService;
-    ProductRestClient productRestClient;
-    TransactionRestClient transactionRestClient;
 
     @GetMapping("/credits")
     public Flux<CreditEntity> findAllCustomer() {
@@ -39,19 +33,16 @@ public class CreditController {
                 .log();
     }
 
-//prueba de commit ABCDEFGHI
     @PostMapping("/credits")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<CreditEntity> addCredit(@RequestBody CreditEntity creditEntity) {
         return creditService.addCredit(creditEntity);
-
     }
 
     @DeleteMapping("/credits/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteCredit(@PathVariable String id) {
         return creditService.deleteCredit(id);
-
     }
 
     @PutMapping("/credits/{id}")
@@ -62,42 +53,20 @@ public class CreditController {
                 //.switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
                 //.switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).<MovieInfo>body("MovieInfo Not Found")))
                 .log();
-
     }
-
 
     /// credit con product
     @GetMapping("/creditProduct/{id}")
-    public Mono<CreditProduct> retrieveCreditById(@PathVariable("id") String creditId) {
-
-        return creditService.getCreditById(creditId)
-                .flatMap(credit12 -> {
-                    var productListMono = productRestClient.retrieveProduct(credit12.getProductId());
-                    return productListMono.map(product2 -> new CreditProduct(
-                            credit12.getCreditId(), credit12.getAmountUsed(), credit12.getLimitCredit(), credit12.getCreditAvailable(),
-                            credit12.getNumberCredit(), credit12.getType(), product2));
-                });
-
+    public Mono<ResponseEntity<CreditProduct>> retrieveCreditById(@PathVariable("id") String creditId) {
+        return creditService.getCreditProduct(creditId)
+                .map(ResponseEntity.ok()::body)
+                .switchIfEmpty(Mono.error(new CreditNotFoundException("Id no encontrado")));
     }
 
-    ///credit Product Transaction;
-
+    //credit Product Transaction;
     @GetMapping("/creditTransaction/{id}")
     public Mono<CreditTransaction> retrieveCreditAndTransactionById(@PathVariable("id") String creditId) {
-        Mono<List<TransactionDTO>>  transc = transactionRestClient.retrieveProduct(creditId).collectList();
-        Mono<CreditEntity> cred=creditService.getCreditById(creditId);
-        Mono<CreditTransaction> credi=
-                cred.flatMap(cr->
-                         transc.flatMap(tr-> {
-                             var  produc= productRestClient.retrieveProduct(cr.getProductId());
-                             return produc.map(pr->
-                                     new CreditTransaction(cr.getCreditId(),
-                                             cr.getAmountUsed(),
-                                             cr.getLimitCredit(),
-                                             cr.getCreditAvailable(),
-                                             cr.getNumberCredit(),
-                                             cr.getType(),pr,tr));}));
-        return credi;
+        return creditService.getCreditTransaction(creditId);
     }
 
 }
