@@ -69,43 +69,17 @@ public class CreditServiceImpl implements CreditService {
     public Mono<CreditTransaction> getCreditTransaction(String creditId) {
         Mono<List<TransactionDTO>> transc = transactionRestClient.retrieveProduct(creditId).collectList();
         Mono<CreditEntity> cred = getCreditById(creditId);
-        Mono<CreditTransaction> credi =
-                cred.flatMap(cr ->
-                        transc.flatMap(tr -> {
-                            var produc = productRestClient.retrieveProduct(cr.getProductId());
-                            return produc.map(pr ->
-                                    new CreditTransaction(cr.getCreditId(),
-                                            cr.getAmountUsed(),
-                                            cr.getLimitCredit(),
-                                            cr.getCreditAvailable(),
-                                            cr.getNumberCredit(),
-                                            cr.getType(), pr, tr));
-                        }));
-        return credi;
+        return cred.flatMap(cr ->
+                transc.flatMap(tr -> {
+                    var produc = productRestClient.retrieveProduct(cr.getProductId());
+                    return produc.map(pr ->
+                            new CreditTransaction(cr.getCreditId(),
+                                    cr.getAmountUsed(),
+                                    cr.getLimitCredit(),
+                                    cr.getCreditAvailable(),
+                                    cr.getNumberCredit(),
+                                    cr.getType(), pr, tr));
+                }));
     }
-
-
-  /*  public Flux<ProductEntity> findProductByCreditId(String id) {
-        return creditRepository
-                .findById(id)
-                .thenMany(productRepository.findAll())
-                .filter(comment1 -> comment1.getIdCredit()
-                        .equals(id));
-
-    }*/
-
-/*    public Mono<CreditEntity> findPostByIdShowComments(String id) {
-        return creditRepository
-                .findById(id)
-                .flatMap(postFound -> ProductService
-                        .findCommentsByPostId(postFound.getId())
-                        .collectList()
-                        .flatMap(comments -> {
-                            postFound.setListComments(comments);
-                            return Mono.just(postFound);
-                        })
-                );
-    }*/
-
 
 }

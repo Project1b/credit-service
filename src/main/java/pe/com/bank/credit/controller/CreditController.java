@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pe.com.bank.credit.client.ProductRestClient;
-import pe.com.bank.credit.client.TransactionRestClient;
 import pe.com.bank.credit.entity.*;
 import pe.com.bank.credit.exception.CreditNotFoundException;
 import pe.com.bank.credit.service.CreditService;
@@ -63,7 +61,6 @@ public class CreditController {
                 .switchIfEmpty(Mono.error(new CreditNotFoundException("Id no encontrado")));
     }
 
-    //credit Product Transaction;
     @GetMapping("/creditTransaction/{id}")
     public Mono<CreditTransaction> retrieveCreditAndTransactionById(@PathVariable("id") String creditId) {
         return creditService.getCreditTransaction(creditId);
