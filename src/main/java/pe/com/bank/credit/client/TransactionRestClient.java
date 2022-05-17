@@ -22,7 +22,7 @@ public class TransactionRestClient {
 
     public Flux<TransactionDTO> retrieveProduct(String productId){
 
-        var url = transactionUrl.concat("/{id}");
+        var url = transactionUrl.concat("/credit/{id}");
         return webClient
                 .get()
                 .uri(url, productId)
