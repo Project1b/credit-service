@@ -3,6 +3,7 @@ package pe.com.bank.credit.exception;
 //test1
 //reemplazar
 //tesmer
+//huu
 public class CreditNotFoundException extends RuntimeException{
 
     private String message;
