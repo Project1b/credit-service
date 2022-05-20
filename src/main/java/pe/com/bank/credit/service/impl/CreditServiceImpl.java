@@ -86,7 +86,7 @@ public class CreditServiceImpl implements CreditService {
     	return creditRepository.countByCustomerIdAndProductId(customerId, productId);
     }
 
-<<<<<<< HEAD
+
     public Flux<CreditEntity> getByProductId(String id){
     	return creditRepository.findByProductId(id);
     }
@@ -118,6 +118,5 @@ public class CreditServiceImpl implements CreditService {
     }*/
 
 
-=======
->>>>>>> branch 'master' of https://github.com/Project1b/credit-service.git
+
 }
