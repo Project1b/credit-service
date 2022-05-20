@@ -83,8 +83,19 @@ public class CreditServiceImpl implements CreditService {
                         }));
         return credi;
     }
+    
+    public Mono<Long> getCountByCustomerIdAndProductId(String customerId,String productId){
+    	return creditRepository.countByCustomerIdAndProductId(customerId, productId);
+    }
 
-
+    public Flux<CreditEntity> getByProductId(String id){
+    	return creditRepository.findByProductId(id);
+    }
+    
+    public Flux<CreditEntity> getByCustomerId(String id){
+    	return creditRepository.findByCustomerId(id);
+    }
+    
   /*  public Flux<ProductEntity> findProductByCreditId(String id) {
         return creditRepository
                 .findById(id)

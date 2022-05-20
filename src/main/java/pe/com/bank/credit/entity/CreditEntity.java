@@ -20,4 +20,5 @@ public class CreditEntity {
     private String numberCredit;
     private String type;
     private String productId;
+    private String customerId;
 }
