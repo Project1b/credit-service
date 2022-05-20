@@ -69,25 +69,24 @@ public class CreditServiceImpl implements CreditService {
     public Mono<CreditTransaction> getCreditTransaction(String creditId) {
         Mono<List<TransactionDTO>> transc = transactionRestClient.retrieveProduct(creditId).collectList();
         Mono<CreditEntity> cred = getCreditById(creditId);
-        Mono<CreditTransaction> credi =
-                cred.flatMap(cr ->
-                        transc.flatMap(tr -> {
-                            var produc = productRestClient.retrieveProduct(cr.getProductId());
-                            return produc.map(pr ->
-                                    new CreditTransaction(cr.getCreditId(),
-                                            cr.getAmountUsed(),
-                                            cr.getLimitCredit(),
-                                            cr.getCreditAvailable(),
-                                            cr.getNumberCredit(),
-                                            cr.getType(), pr, tr));
-                        }));
-        return credi;
+        return cred.flatMap(cr ->
+                transc.flatMap(tr -> {
+                    var produc = productRestClient.retrieveProduct(cr.getProductId());
+                    return produc.map(pr ->
+                            new CreditTransaction(cr.getCreditId(),
+                                    cr.getAmountUsed(),
+                                    cr.getLimitCredit(),
+                                    cr.getCreditAvailable(),
+                                    cr.getNumberCredit(),
+                                    cr.getType(), pr, tr));
+                }));
     }
     
     public Mono<Long> getCountByCustomerIdAndProductId(String customerId,String productId){
     	return creditRepository.countByCustomerIdAndProductId(customerId, productId);
     }
 
+<<<<<<< HEAD
     public Flux<CreditEntity> getByProductId(String id){
     	return creditRepository.findByProductId(id);
     }
@@ -119,4 +118,6 @@ public class CreditServiceImpl implements CreditService {
     }*/
 
 
+=======
+>>>>>>> branch 'master' of https://github.com/Project1b/credit-service.git
 }

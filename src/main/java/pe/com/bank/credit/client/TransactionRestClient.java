@@ -4,10 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import pe.com.bank.credit.entity.ProductEntity;
 import pe.com.bank.credit.entity.TransactionDTO;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 @Component
 @Slf4j
@@ -24,7 +22,7 @@ public class TransactionRestClient {
 
     public Flux<TransactionDTO> retrieveProduct(String productId){
 
-        var url = transactionUrl.concat("/{id}");
+        var url = transactionUrl.concat("/credit/{id}");
         return webClient
                 .get()
                 .uri(url, productId)

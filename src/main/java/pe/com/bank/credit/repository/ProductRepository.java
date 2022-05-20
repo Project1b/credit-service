@@ -6,4 +6,5 @@ import pe.com.bank.credit.entity.ProductEntity;
 
 @Repository
 public interface ProductRepository extends ReactiveMongoRepository<ProductEntity, String> {
+
 }
