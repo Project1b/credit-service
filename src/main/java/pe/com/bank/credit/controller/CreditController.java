@@ -62,4 +62,19 @@ public class CreditController {
     public Mono<CreditTransaction> retrieveCreditAndTransactionById(@PathVariable("id") String creditId) {
         return creditService.getCreditTransaction(creditId);
     }
+
+    @GetMapping("/credits/{customerId}/{productId}")
+    public Mono<Long> getCountByCustomerIdAndProductId(@PathVariable String customerId,@PathVariable String productId) {
+        return creditService.getCountByCustomerIdAndProductId(customerId,productId);
+    }
+
+    @GetMapping("/credits/productId/{productId}")
+    public Flux<CreditEntity> getByProductId(@PathVariable String productId){
+    	return creditService.getByProductId(productId);
+    }
+
+    @GetMapping("/credits/customerId/{customerId}")
+    public Flux<CreditEntity> getByCustomerId(@PathVariable String customerId){
+    	return creditService.getByProductId(customerId);
+    }
 }
