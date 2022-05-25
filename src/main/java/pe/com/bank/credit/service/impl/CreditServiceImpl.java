@@ -75,6 +75,48 @@ public class CreditServiceImpl implements CreditService {
                         ));
     }
 
-    public Mono<TransactionDTO> createPaymentCredit()
+
+    public Mono<Long> getCountByCustomerIdAndProductId(String customerId,String productId){
+        return creditRepository.countByCustomerIdAndProductId(customerId, productId);
+    }
+
+
+    public Flux<CreditEntity> getByProductId(String id){
+        return creditRepository.findByProductId(id);
+    }
+
+    public Flux<CreditEntity> getByCustomerId(String id){
+        return creditRepository.findByCustomerId(id);
+    }
+
+    public Flux<CreditEntity> getByCustomerAndProductId(String customerId,String productId){
+        return creditRepository.findByCustomerIdAndProductId(customerId, productId);
+    }
+
+  /*  public Flux<ProductEntity> findProductByCreditId(String id) {
+        return creditRepository
+                .findById(id)
+                .thenMany(productRepository.findAll())
+                .filter(comment1 -> comment1.getIdCredit()
+                        .equals(id));
+
+    }*/
+
+/*    public Mono<CreditEntity> findPostByIdShowComments(String id) {
+        return creditRepository
+                .findById(id)
+                .flatMap(postFound -> ProductService
+                        .findCommentsByPostId(postFound.getId())
+                        .collectList()
+                        .flatMap(comments -> {
+                            postFound.setListComments(comments);
+                            return Mono.just(postFound);
+                        })
+                );
+    }*/
+
+
+
+
 
 }
