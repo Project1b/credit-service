@@ -48,12 +48,9 @@ public class CreditController {
         return creditService.updateCredit(updatedCredit, id)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.error(new CreditNotFoundException("credit Not Found")))
-                //.switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
-                //.switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).<MovieInfo>body("MovieInfo Not Found")))
                 .log();
     }
 
-    /// credit con product
     @GetMapping("/creditProduct/{id}")
     public Mono<ResponseEntity<CreditProduct>> retrieveCreditById(@PathVariable("id") String creditId) {
         return creditService.getCreditProduct(creditId)
@@ -65,5 +62,4 @@ public class CreditController {
     public Mono<CreditTransaction> retrieveCreditAndTransactionById(@PathVariable("id") String creditId) {
         return creditService.getCreditTransaction(creditId);
     }
-
 }

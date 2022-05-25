@@ -58,28 +58,22 @@ public class CreditServiceImpl implements CreditService {
 
     public Mono<CreditProduct> getCreditProduct(String creditId) {
         return getCreditById(creditId)
-                .flatMap(credit12 -> {
-                    var productListMono = productRestClient.retrieveProduct(credit12.getProductId());
-                    return productListMono.map(product2 -> new CreditProduct(
-                            credit12.getCreditId(), credit12.getAmountUsed(), credit12.getLimitCredit(), credit12.getCreditAvailable(),
-                            credit12.getNumberCredit(), credit12.getType(), product2));
-                });
+                .flatMap(credit12 -> productRestClient.retrieveProduct(credit12.getProductId())
+                        .map(product2 -> new CreditProduct(
+                                credit12.getCreditId(), credit12.getAmountUsed(), credit12.getLimitCredit(), credit12.getCreditAvailable(),
+                                credit12.getNumberCredit(), credit12.getType(), product2)));
     }
 
     public Mono<CreditTransaction> getCreditTransaction(String creditId) {
-        Mono<List<TransactionDTO>> transc = transactionRestClient.retrieveProduct(creditId).collectList();
-        Mono<CreditEntity> cred = getCreditById(creditId);
-        return cred.flatMap(cr ->
-                transc.flatMap(tr -> {
-                    var produc = productRestClient.retrieveProduct(cr.getProductId());
-                    return produc.map(pr ->
-                            new CreditTransaction(cr.getCreditId(),
-                                    cr.getAmountUsed(),
-                                    cr.getLimitCredit(),
-                                    cr.getCreditAvailable(),
-                                    cr.getNumberCredit(),
-                                    cr.getType(), pr, tr));
-                }));
+        return getCreditById(creditId)
+                .flatMap(cr -> transactionRestClient.retrieveProduct(creditId).collectList()
+                        .flatMap(tr -> productRestClient.retrieveProduct(cr.getProductId())
+                                .map(pr -> new CreditTransaction(cr.getCreditId(),
+                                        cr.getAmountUsed(), cr.getLimitCredit(),
+                                        cr.getCreditAvailable(), cr.getNumberCredit(),
+                                        cr.getType(), pr, tr))
+                        ));
     }
+
 
 }
