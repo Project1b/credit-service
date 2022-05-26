@@ -18,12 +18,12 @@ public class CreditController {
     CreditService creditService;
 
     @GetMapping("/credits")
-    public Flux<CreditEntity> findAllCustomer() {
+    public Flux<CreditEntity> findAllCredit() {
         return creditService.findAllCredit();
     }
 
     @GetMapping("/credits/{id}")
-    public Mono<ResponseEntity<CreditEntity>> getMovieInfoById(@PathVariable String id) {
+    public Mono<ResponseEntity<CreditEntity>> getCredit(@PathVariable String id) {
         return creditService.getCreditById(id)
                 .map(credit1 -> ResponseEntity.ok()
                         .body(credit1))
