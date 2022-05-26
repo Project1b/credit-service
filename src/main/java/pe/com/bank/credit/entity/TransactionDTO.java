@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class TransactionDTO {
 
     private String transactionId;
-    private String accountNumber;
+    private String accountId;
     private Double amount;
     private String date;
     private String type;

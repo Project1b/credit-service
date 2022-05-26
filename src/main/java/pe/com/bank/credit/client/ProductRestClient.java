@@ -22,7 +22,7 @@ public class ProductRestClient {
 
     public Mono<ProductEntity> retrieveProduct(String productId){
 
-        var url = productUrl.concat("/{id}");
+        var url = productUrl.concat("/getProduct/{id}");
         return webClient
                 .get()
                 .uri(url, productId)

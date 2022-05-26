@@ -22,10 +22,12 @@ public interface CreditService {
     public Mono<CreditTransaction> getCreditTransaction(String creditId);
 
     public Mono<Long>getCountByCustomerIdAndProductId(String customerId,String productId);
-    
+
     public Flux<CreditEntity> getByProductId(String id);
-    
+
     public Flux<CreditEntity>getByCustomerId(String id);
     
     public Flux<CreditEntity> getByCustomerAndProductId(String customerId,String productId);
+
+
 }

@@ -18,12 +18,12 @@ public class CreditController {
     CreditService creditService;
 
     @GetMapping("/credits")
-    public Flux<CreditEntity> findAllCustomer() {
+    public Flux<CreditEntity> findAllCredit() {
         return creditService.findAllCredit();
     }
 
     @GetMapping("/credits/{id}")
-    public Mono<ResponseEntity<CreditEntity>> getMovieInfoById(@PathVariable String id) {
+    public Mono<ResponseEntity<CreditEntity>> getCredit(@PathVariable String id) {
         return creditService.getCreditById(id)
                 .map(credit1 -> ResponseEntity.ok()
                         .body(credit1))
@@ -48,12 +48,9 @@ public class CreditController {
         return creditService.updateCredit(updatedCredit, id)
                 .map(ResponseEntity.ok()::body)
                 .switchIfEmpty(Mono.error(new CreditNotFoundException("credit Not Found")))
-                //.switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
-                //.switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).<MovieInfo>body("MovieInfo Not Found")))
                 .log();
     }
 
-    /// credit con product
     @GetMapping("/creditProduct/{id}")
     public Mono<ResponseEntity<CreditProduct>> retrieveCreditById(@PathVariable("id") String creditId) {
         return creditService.getCreditProduct(creditId)
@@ -65,20 +62,25 @@ public class CreditController {
     public Mono<CreditTransaction> retrieveCreditAndTransactionById(@PathVariable("id") String creditId) {
         return creditService.getCreditTransaction(creditId);
     }
-    
+
     @GetMapping("/credits/{customerId}/{productId}")
     public Mono<Long> getCountByCustomerIdAndProductId(@PathVariable String customerId,@PathVariable String productId) {
         return creditService.getCountByCustomerIdAndProductId(customerId,productId);
     }
-    
+
     @GetMapping("/credits/productId/{productId}")
     public Flux<CreditEntity> getByProductId(@PathVariable String productId){
-    	return creditService.getByProductId(productId);
+        return creditService.getByProductId(productId);
     }
 
     @GetMapping("/credits/customerId/{customerId}")
     public Flux<CreditEntity> getByCustomerId(@PathVariable String customerId){
-    	return creditService.getByProductId(customerId);
+        return creditService.getByProductId(customerId);
+    }
+
+    @GetMapping("/credits/customerIdAndProductId/{customerId}/{productId}")
+    public Flux<CreditEntity> getByCustomerAndProductId(String customerId,String productId){
+        return creditService.getByCustomerAndProductId(customerId,productId);
     }
     
     @GetMapping("/credits/customerIdAndProductId/{customerId}/{productId}")
