@@ -26,4 +26,6 @@ public interface CreditService {
     public Flux<CreditEntity> getByProductId(String id);
     
     public Flux<CreditEntity>getByCustomerId(String id);
+    
+    public Flux<CreditEntity> getByCustomerAndProductId(String customerId,String productId);
 }

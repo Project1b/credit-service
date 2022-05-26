@@ -80,4 +80,9 @@ public class CreditController {
     public Flux<CreditEntity> getByCustomerId(@PathVariable String customerId){
     	return creditService.getByProductId(customerId);
     }
+    
+    @GetMapping("/credits/customerIdAndProductId/{customerId}/{productId}")
+    public Flux<CreditEntity> getByCustomerAndProductId(String customerId,String productId){
+    	return creditService.getByCustomerAndProductId(customerId,productId);
+    }
 }

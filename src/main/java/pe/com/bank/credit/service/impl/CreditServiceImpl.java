@@ -95,6 +95,10 @@ public class CreditServiceImpl implements CreditService {
     	return creditRepository.findByCustomerId(id);
     }
     
+    public Flux<CreditEntity> getByCustomerAndProductId(String customerId,String productId){
+    	return creditRepository.findByCustomerIdAndProductId(customerId, productId);
+    }
+    
   /*  public Flux<ProductEntity> findProductByCreditId(String id) {
         return creditRepository
                 .findById(id)
